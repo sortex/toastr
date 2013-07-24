@@ -174,7 +174,11 @@
 				}
 
 				if (options.closeButton) {
-					$closeElement.addClass('toast-close-button');
+					$closeElement
+						.addClass('toast-close-button')
+						.on('click', function() {
+							fadeAway(true);
+						});
 					$toastElement.addClass('toast-close').prepend($closeElement).append($clearElement);
 				}
 
@@ -196,7 +200,7 @@
 
 				if (options.onclick) {
 					$toastElement.click(function () {
-						options.onclick() && fadeAway();
+						options.onclick() && fadeAway(false);
 					});
 				}
 
@@ -208,8 +212,8 @@
 
 				return $toastElement;
 
-				function fadeAway() {
-					if ($(':focus', $toastElement).length > 0) {
+				function fadeAway(TriggeredBycloseButton) {
+					if ( ! TriggeredBycloseButton && $(':focus', $toastElement).length > 0) {
 						return;
 					}
 					return $toastElement.fadeOut(options.fadeOut, function () {
